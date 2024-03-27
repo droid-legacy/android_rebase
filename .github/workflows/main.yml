@@ -20,16 +20,11 @@ jobs:
         sudo apt-get install git
     - name: Rebase
       run: |
-        git config --global user.name "${GITHUB_USER}"
-        git config --global user.email "${GITHUB_EMAIL}"
+        git config --global user.name "${{ secrets.USERNAME }}"
+        git config --global user.email "${{ secrets.EMAIL }}"
 
-        git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/droid-legacy/${{ matrix.repo }} -b ${{ matrix.branch }}
+        git clone https://"${{ secrets.USERNAME }}":"${{ secrets.TOKEN }}"@github.com/droid-legacy/${{ matrix.repo }} -b ${{ matrix.branch }}
         cd ${{ matrix.repo }}
         git fetch https://github.com/LineageOS/${{ matrix.repo }}.git ${{ matrix.branch }}
         git rebase FETCH_HEAD
         git push -f
-
-      env:
-        GITHUB_EMAIL: ${{ secrets.EMAIL }}
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        GITHUB_USER: ${{ secrets.USERNAME }}
